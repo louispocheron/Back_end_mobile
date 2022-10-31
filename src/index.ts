@@ -1,7 +1,19 @@
-import express, {Request, Response} from 'express'; 
+import express from 'express'; 
+import cors from 'cors';
 const app = express();
 
 
-app.listen(8085, () => {
-    console.info("port 8085")
+const testRoute = require('./routes/testRoute')
+
+
+// MIDDLEWARE
+app.use(cors());
+app.use(express.json());
+
+
+// ROUTES
+app.use('/api', testRoute);
+
+app.listen(3000, () => {
+    console.log('serveur run sur le port 3000');
 })
