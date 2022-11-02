@@ -5,6 +5,8 @@ const app = express();
 
 const UserRoute = require('./routes/UserRoute');
 const ActionRoute = require('./routes/ActionRoute');
+const AssociationRoute = require('./routes/associationRoute');
+
 
 
 // MIDDLEWARE
@@ -14,6 +16,8 @@ app.use(express.json());
 // ROUTES
 app.use('/api', UserRoute);
 app.use('/api', ActionRoute);
+app.use('/api', AssociationRoute);
+
 
 
 app.listen(3000, () => {

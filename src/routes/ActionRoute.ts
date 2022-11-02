@@ -1,6 +1,7 @@
 const router = require('express').Router();
 import { PrismaClient } from 'prisma/prisma-client'
 import { Response } from 'express'
+import { Request } from 'express'
 
 
 const prisma = new PrismaClient()
@@ -48,6 +49,47 @@ router.get('/action/:id', async(req: Request, res: Response) => {
             }
         })
         res.send(UniqueAction);
+    }
+    catch(error){
+        res.send(error)
+    }
+})
+
+
+
+// A REVOIR CA BEUG 
+router.post('/action', async (req: Request, res: Response) => {
+    const test = new Date(Date.now())
+
+    try{
+        const postAction = await prisma.action.create({
+            
+            // @ts-ignore
+            data: {
+                ville_depart: req.body.villeDepart,
+                ville_arrive: req.body.villeArrive,
+                km: req.body.km,
+                raisons: req.body.raisons,
+                heure_depart: req.body.heureDepart,
+                heure_arrivee: req.body.heureArrivee,
+                date: test,
+                user_id: req.body.userId,
+                association_id: req.body.associationId,
+                duree: req.body.duree,
+                frais: req.body.frais,
+                // @ts-ignore
+                // created_at: Date.now(),
+                charges: req.body.charges,
+                groupe: req.body.groupe,
+                dons: req.body.dons,
+                heures_valorisees: req.body.valorisees,
+                a_payer: req.body.aPayer,
+            },
+        })
+        res.send({
+            postAction,
+            "bien crée": 200
+        });
     }
     catch(error){
         res.send(error)
