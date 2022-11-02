@@ -1,5 +1,7 @@
 const router = require('express').Router();
 import { PrismaClient } from 'prisma/prisma-client'
+import { Response } from 'express'
+
 
 const prisma = new PrismaClient()
 
@@ -9,11 +11,9 @@ const prisma = new PrismaClient()
 router.get('/users', async (req: Request, res: Response) => {
     try{
         const allUsers = await prisma.user.findMany();
-        //@ts-ignore
         res.send(allUsers);
     }
     catch(error){
-        //@ts-ignore
         res.send(error)
     }
 })
@@ -29,11 +29,9 @@ router.delete('/user/delete/:id', async(req: Request, res: Response) => {
                 id: id
             }
         });
-        // @ts-ignore
         res.send(deleteUser);
     }
     catch(error){
-        // @ts-ignore
         res.send(error);
     }
 })
@@ -48,11 +46,10 @@ router.get('/user/:id', async(req: Request, res: Response) => {
                 id: id
             }
         })
-        // @ts-ignore
+
         res.send(findUser)
     }
     catch(error){
-        // @ts-ignore
         res.send(error)
     }
 })

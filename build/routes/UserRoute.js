@@ -16,11 +16,9 @@ const prisma = new prisma_client_1.PrismaClient();
 router.get('/users', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const allUsers = yield prisma.user.findMany();
-        //@ts-ignore
         res.send(allUsers);
     }
     catch (error) {
-        //@ts-ignore
         res.send(error);
     }
 }));
@@ -34,11 +32,9 @@ router.delete('/user/delete/:id', (req, res) => __awaiter(void 0, void 0, void 0
                 id: id
             }
         });
-        // @ts-ignore
         res.send(deleteUser);
     }
     catch (error) {
-        // @ts-ignore
         res.send(error);
     }
 }));
@@ -52,11 +48,9 @@ router.get('/user/:id', (req, res) => __awaiter(void 0, void 0, void 0, function
                 id: id
             }
         });
-        // @ts-ignore
         res.send(findUser);
     }
     catch (error) {
-        // @ts-ignore
         res.send(error);
     }
 }));
