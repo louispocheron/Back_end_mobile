@@ -6,12 +6,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
 const app = (0, express_1.default)();
-const testRoute = require('./routes/testRoute');
+const UserRoute = require('./routes/UserRoute');
 // MIDDLEWARE
 app.use((0, cors_1.default)());
 app.use(express_1.default.json());
 // ROUTES
-app.use('/api', testRoute);
+app.use('/api', UserRoute);
 app.listen(3000, () => {
     console.log('serveur run sur le port 3000');
 });

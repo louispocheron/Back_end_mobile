@@ -3,16 +3,15 @@ import cors from 'cors';
 const app = express();
 
 
-const testRoute = require('./routes/testRoute')
+const UserRoute = require('./routes/UserRoute')
 
 
 // MIDDLEWARE
 app.use(cors());
 app.use(express.json());
 
-
 // ROUTES
-app.use('/api', testRoute);
+app.use('/api', UserRoute);
 
 app.listen(3000, () => {
     console.log('serveur run sur le port 3000');

@@ -1,0 +1,104 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model action {
+  id                 Int           @id @default(autoincrement())
+  ville_depart       String        @db.VarChar(255)
+  ville_arrive       String        @db.VarChar(255)
+  km                 Int
+  raisons            String        @db.VarChar(5000)
+  heure_depart       DateTime?     @db.Time(0)
+  heure_arrivee      DateTime?     @db.Time(0)
+  date               DateTime      @db.Date
+  user_id            Int
+  association_id     Int?
+  duree              String?       @db.VarChar(255)
+  frais              Int?
+  created_at         DateTime?     @db.DateTime(0)
+  frais_kilometrique Decimal?      @db.Decimal(10, 0)
+  charges            String        @db.VarChar(255)
+  groupe             String        @db.VarChar(100)
+  dons               String?       @db.VarChar(255)
+  heures_valorisees  String?       @db.VarChar(255)
+  a_payer            String?       @db.VarChar(255)
+  user               user          @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_47CC8C92A76ED395")
+  associations       associations? @relation(fields: [association_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_47CC8C92EFB9C8A5")
+
+  @@index([user_id], map: "IDX_47CC8C92A76ED395")
+  @@index([association_id], map: "IDX_47CC8C92EFB9C8A5")
+}
+
+model associations {
+  id                Int                 @id @default(autoincrement())
+  name              String              @db.VarChar(1000)
+  logo              String?             @db.VarChar(3000)
+  description       String?             @db.VarChar(5000)
+  user_id           Int?
+  numero_siret      String              @db.VarChar(255)
+  region            String?             @db.VarChar(255)
+  user              user?               @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_8921C4B1A76ED395")
+  action            action[]
+  user_associations user_associations[]
+
+  @@index([user_id], map: "IDX_8921C4B1A76ED395")
+}
+
+model doctrine_migration_versions {
+  version        String    @id
+  executed_at    DateTime? @db.DateTime(0)
+  execution_time Int?
+}
+
+model messenger_messages {
+  id           BigInt    @id @default(autoincrement())
+  body         String    @db.LongText
+  headers      String    @db.LongText
+  queue_name   String    @db.VarChar(255)
+  created_at   DateTime  @db.DateTime(0)
+  available_at DateTime  @db.DateTime(0)
+  delivered_at DateTime? @db.DateTime(0)
+
+  @@index([delivered_at], map: "IDX_75EA56E016BA31DB")
+}
+
+model reset_password_request {
+  id           Int      @id @default(autoincrement())
+  user_id      Int
+  selector     String   @db.VarChar(20)
+  hashed_token String   @db.VarChar(100)
+  requested_at DateTime @db.DateTime(0)
+  expires_at   DateTime @db.DateTime(0)
+  user         user     @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_7CE748AA76ED395")
+
+  @@index([user_id], map: "IDX_7CE748AA76ED395")
+}
+
+model user {
+  id                     Int                      @id @default(autoincrement())
+  username               String                   @db.VarChar(180)
+  roles                  Json
+  password               String                   @db.VarChar(255)
+  email                  String?                  @unique(map: "UNIQ_8D93D649E7927C74") @db.VarChar(255)
+  profil_picture         String?                  @db.VarChar(1500)
+  action                 action[]
+  associations           associations[]
+  reset_password_request reset_password_request[]
+  user_associations      user_associations[]
+}
+
+model user_associations {
+  user_id         Int
+  associations_id Int
+  associations    associations @relation(fields: [associations_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_9EDB8B34122538A")
+  user            user         @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "FK_9EDB8B3A76ED395")
+
+  @@id([user_id, associations_id])
+  @@index([associations_id], map: "IDX_9EDB8B34122538A")
+  @@index([user_id], map: "IDX_9EDB8B3A76ED395")
+}
