@@ -1,11 +1,14 @@
 import express from 'express';
 import cors from 'cors';
 const app = express();
+require('dotenv').config();
 
 
+// USE ROUTES
 const UserRoute = require('./routes/UserRoute');
 const ActionRoute = require('./routes/ActionRoute');
 const AssociationRoute = require('./routes/associationRoute');
+
 
 
 

@@ -2,6 +2,8 @@ const router = require('express').Router();
 import { PrismaClient } from 'prisma/prisma-client'
 import { Response } from 'express'
 import { Request } from 'express'
+import * as fs from 'fs'
+import * as path from 'path';
 
 const prisma = new PrismaClient();
 
@@ -38,6 +40,8 @@ router.get('/association/:id', async(req: Request, res: Response) => {
 
 // CREER UNE ASSOCIAITON CA MARCHE MANQUE USER_ID 
 router.post("/association", async(req: Request, res: Response) => {
+    //@ts-ignore
+    console.log(req.body)
     try{
         const postAssociation = await prisma.associations.create({
             // @ts-ignore

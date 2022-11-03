@@ -6,6 +6,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
 const app = (0, express_1.default)();
+require('dotenv').config();
+// USE ROUTES
 const UserRoute = require('./routes/UserRoute');
 const ActionRoute = require('./routes/ActionRoute');
 const AssociationRoute = require('./routes/associationRoute');

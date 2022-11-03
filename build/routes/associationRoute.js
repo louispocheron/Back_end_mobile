@@ -39,6 +39,8 @@ router.get('/association/:id', (req, res) => __awaiter(void 0, void 0, void 0, f
 }));
 // CREER UNE ASSOCIAITON CA MARCHE MANQUE USER_ID 
 router.post("/association", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    //@ts-ignore
+    console.log(req.body);
     try {
         const postAssociation = yield prisma.associations.create({
             // @ts-ignore
