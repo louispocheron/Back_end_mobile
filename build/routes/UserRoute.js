@@ -56,6 +56,7 @@ router.get('/user/:id', (req, res) => __awaiter(void 0, void 0, void 0, function
         res.send(error);
     }
 }));
+// REGISTER DANS L'APP, MARCHE
 router.post('/register', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const salt = yield bcrypt.genSalt(10);
@@ -97,6 +98,44 @@ router.post('/register', (req, res) => __awaiter(void 0, void 0, void 0, functio
     catch (error) {
         console.log(error);
         res.send(error);
+    }
+}));
+// ROUTE LOGIN
+router.post('/login', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        // CHECK SI L'UTILISATEUR EST DANS LA BASE DE DONNEE
+        const user = yield prisma.user.findUnique({
+            where: {
+                email: req.body.email
+            }
+        });
+        // SI NON, ON ENVOIE MSG ERREUR
+        if (user == null) {
+            return res.status(404).json({
+                message: "l'utilisateur n'a pas été trouvé"
+            });
+        }
+        //ON VERIFIE LE MOT DE PASSE AVEC BCRYPT 
+        if (!bcrypt.compareSync(req.body.password, user.password)) {
+            return res.status(401).json({
+                message: "mot de passe incorrect"
+            });
+        }
+        // ON CREER LE TOKEN POUR LA SESSION 
+        let token = jwt.sign({
+            id: user.id.toString()
+        }, process.env.TOKEN_SECRET, {
+            expiresIn: '1h'
+        });
+        return res.status(200).json({
+            message: 'vous etes bien connecté',
+            user: user,
+            token: token
+        });
+    }
+    catch (error) {
+        console.log(error);
+        res.status(500).send(error);
     }
 }));
 module.exports = router;
